@@ -59,6 +59,7 @@ public class DAO {
             preparedStatement.setString(17, dto.getWorkDt());
             
            preparedStatement.executeUpdate();
+            
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -365,5 +366,100 @@ public class DAO {
             }
         }
         return wifiList;
+    }
+    
+    public DTO detail(String no) {
+    	
+    	DTO dto = new DTO();
+        String url = "jdbc:sqlite:/Users/g/Desktop/코딩/Mission1_DB.db";
+
+        try {
+            Class.forName("org.sqlite.JDBC");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet rs = null;
+        
+        
+
+        try {
+            connection = DriverManager.getConnection(url);
+            
+            String sql =  "SELECT *" 
+            		+ " FROM WIFI"
+            		+ " WHERE MAN_NUM = ?";
+            
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, no);
+            rs = preparedStatement.executeQuery();
+            
+          
+        	String manNum = rs.getString("MAN_NUM");
+        	float dist = rs.getFloat("DISTANCE"); 
+        	String locGu = rs.getString("LOC_GU");
+        	String wifiName = rs.getString("WIFI_NAME");
+        	String locAd = rs.getString("LOC_AD");
+        	String locAd2 = rs.getString("LOC_AD2");
+        	String locFloor = rs.getString("LOC_FLOOR");
+        	String instType = rs.getString("INST_TYPE");
+        	String instAd = rs.getString("INST_AD");
+        	String service = rs.getString("SERVICE");
+        	String netType = rs.getString("NET_TYPE");
+        	int instYear = rs.getInt("INST_YEAR");
+        	String inOut = rs.getString("INOUT");
+        	String envir = rs.getString("ENVIR");
+        	float coorX = rs.getFloat("COOR_X");
+        	float coorY = rs.getFloat("COOR_Y");
+        	String workDt = rs.getString("WORK_DT");
+        	
+        	
+        	dto.setManNum(manNum);
+        	dto.setDist(dist);
+        	dto.setLocGu(locGu);
+        	dto.setWifiName(wifiName);
+        	dto.setLocAd(locAd);
+        	dto.setLocAd2(locAd2);
+        	dto.setLocFloor(locFloor);
+        	dto.setInstType(instType);
+        	dto.setInstAd(instAd);
+        	dto.setService(service);
+        	dto.setNetType(netType);
+        	dto.setInstYear(instYear);
+        	dto.setInOut(inOut);
+        	dto.setEnvir(envir);
+        	dto.setCoorX(coorX);
+        	dto.setCoorY(coorY);
+        	dto.setWorkDt(workDt);       
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null && !rs.isClosed()) {
+                    rs.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                if (preparedStatement != null && !preparedStatement.isClosed()) {
+                    preparedStatement.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            try {
+                if (connection != null && !connection.isClosed()) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return dto;
     }
 }
