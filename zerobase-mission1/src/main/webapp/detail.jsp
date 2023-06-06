@@ -1,3 +1,5 @@
+<%@page import="data.GroupDTO"%>
+<%@page import="data.GroupDAO"%>
 <%@page import="data.DAO"%>
 <%@page import="data.DTO"%>
 <%@page import="data.HistoryDTO"%>
@@ -59,17 +61,29 @@
 		<span> | </span>
 		<a href="bookmark-group.jsp">북마크 그룹 관리</a>
 	</div>
-	<select name="북마크 그룹 이름">
-		<option value="">북마크 그룹 이름 선택</option>
-		<%%>
-			<option value=""></option>
-	</select>
-	<button type="button">북마크 추가하기</button>
+	<% DAO dao = new DAO(); %>
+	<form action="bookmark-add-submit.jsp">
+		<input type="hidden" name="wifiName" value="<%=dao.detail(request.getParameter("no")).getWifiName()%>">
+		<select name="groupName">
+			<option selected disabled>북마크 그룹 이름 선택</option>
+			<%
+				GroupDAO gDao = new GroupDAO();
+				List<GroupDTO> groupList = gDao.showGroup();
+				for(GroupDTO gDto: groupList) { 
+			%>
+				<option value="<%=gDto.getGroupName()%>"><%=gDto.getGroupName()%></option>
+			<%
+				}
+			%>
+		</select>
+	
+	<button type="submit">북마크 추가하기</button>
+	</form>
 	<div style="font-size: 12px">
 	<table>
-				<% 
-				DAO dao = new DAO();
-				DTO dto = dao.detail(request.getParameter("no")); %> 
+			<%
+				DTO dto = dao.detail(request.getParameter("no")); 
+			%> 
 				<tr>
 					<th>거리(km)</th>
 					<td><%=dto.getDist()%></td>
