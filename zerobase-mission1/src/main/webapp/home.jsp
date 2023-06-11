@@ -141,7 +141,7 @@
 			
 				<tbody>
 					<tr>
-						<td colspan="18"><center>위치정보를 입력한 후에 조회해주세요.</center></td>
+						<td colspan="18" align="center">위치정보를 입력한 후에 조회해주세요.</td>
 					</tr>
 				</tbody>
 				</table>

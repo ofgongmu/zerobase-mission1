@@ -5,89 +5,45 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BookmarkDAO {
+public class BookmarkDAO extends DAO {
 
     public void add(BookmarkDTO bDto) {
-        String url = "jdbc:sqlite:/Users/g/Desktop/코딩/Mission1_DB.db";
+
+        Connection connection = connectDb();
 
         try {
-            Class.forName("org.sqlite.JDBC");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet rs = null;
-        
-        
-
-        try {
-            connection = DriverManager.getConnection(url);
-                
+            
             String sql = "insert into BK_WIFI(GROUP_NAME, WIFI_NAME, ADD_DT) " +
                     "values (?, ?, datetime('now', 'localtime'))";
 
-            preparedStatement = connection.prepareStatement(sql);
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, bDto.getGroupName());
             preparedStatement.setString(2, bDto.getWifiName());
            
-            int i = preparedStatement.executeUpdate();
-            if (i > 0) {
-            	System.out.println("성공");
-            } else {
-            	System.out.println("실패");
+            preparedStatement.executeUpdate();
+         
+            if (preparedStatement != null && !preparedStatement.isClosed()) {
+                preparedStatement.close();
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                if (rs != null && !rs.isClosed()) {
-                    rs.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-
-            try {
-                if (preparedStatement != null && !preparedStatement.isClosed()) {
-                    preparedStatement.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-            try {
-                if (connection != null && !connection.isClosed()) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
+        } 
+        
+        closeDb(connection);
 
     }
     
     public void delete(int id) {
-        String url = "jdbc:sqlite:/Users/g/Desktop/코딩/Mission1_DB.db";
-
+        
+        Connection connection = connectDb();
+       
         try {
-            Class.forName("org.sqlite.JDBC");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet rs = null;
-
-        try {
-            connection = DriverManager.getConnection(url);
             
             String sql = "delete from BK_WIFI" +
             		" where BK_ID = ?";
 
-            preparedStatement = connection.prepareStatement(sql);
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, id);
             preparedStatement.execute();
             
@@ -101,30 +57,9 @@ public class BookmarkDAO {
 
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                if (rs != null && !rs.isClosed()) {
-                    rs.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-
-            try {
-                if (preparedStatement != null && !preparedStatement.isClosed()) {
-                    preparedStatement.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-            try {
-                if (connection != null && !connection.isClosed()) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
+        
+        closeDb(connection);
 
     }
     
@@ -133,28 +68,16 @@ public class BookmarkDAO {
     	
     	
     	List<BookmarkDTO> bookmarkList = new ArrayList<>();
-        String url = "jdbc:sqlite:/Users/g/Desktop/코딩/Mission1_DB.db";
-
-        try {
-            Class.forName("org.sqlite.JDBC");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet rs = null;
         
-        
-
+        Connection connection = connectDb();
+       
         try {
-            connection = DriverManager.getConnection(url);
             
             String sql =  "SELECT *" 
             		+ " FROM BK_WIFI";
             
-            preparedStatement = connection.prepareStatement(sql);
-            rs = preparedStatement.executeQuery();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            ResultSet rs = preparedStatement.executeQuery();
             
             while(rs.next()) {
             	int bookmarkId = rs.getInt("BK_ID");
@@ -171,33 +94,18 @@ public class BookmarkDAO {
             	bookmarkList.add(bDto);
             }
            
-
+            if (rs != null && !rs.isClosed()) {
+                rs.close();
+            }
+            
+            if (preparedStatement != null && !preparedStatement.isClosed()) {
+                preparedStatement.close();
+            }
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                if (rs != null && !rs.isClosed()) {
-                    rs.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-
-            try {
-                if (preparedStatement != null && !preparedStatement.isClosed()) {
-                    preparedStatement.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-            try {
-                if (connection != null && !connection.isClosed()) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
+        
+        closeDb(connection);
         return bookmarkList;
     }
     
@@ -205,30 +113,17 @@ public BookmarkDTO detail(int no) {
     	
     	
     	BookmarkDTO bDto = new BookmarkDTO();
-        String url = "jdbc:sqlite:/Users/g/Desktop/코딩/Mission1_DB.db";
+       
+        Connection connection = connectDb();
 
         try {
-            Class.forName("org.sqlite.JDBC");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet rs = null;
-        
-        
-
-        try {
-            connection = DriverManager.getConnection(url);
-            
             String sql =  "SELECT *" 
             		+ " FROM BK_WIFI"
             		+ " WHERE BK_ID = ?";
             
-            preparedStatement = connection.prepareStatement(sql);
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, no);
-            rs = preparedStatement.executeQuery();
+            ResultSet rs = preparedStatement.executeQuery();
             
         	int bookmarkId = rs.getInt("BK_ID");
         	String groupName = rs.getString("GROUP_NAME");
@@ -240,32 +135,19 @@ public BookmarkDTO detail(int no) {
         	bDto.setWifiName(wifiName);
         	bDto.setAddDt(addDt);
         	
+        	if (rs != null && !rs.isClosed()) {
+                rs.close();
+            }
+        	
+        	if (preparedStatement != null && !preparedStatement.isClosed()) {
+                preparedStatement.close();
+            }
+        	
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                if (rs != null && !rs.isClosed()) {
-                    rs.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-
-            try {
-                if (preparedStatement != null && !preparedStatement.isClosed()) {
-                    preparedStatement.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-            try {
-                if (connection != null && !connection.isClosed()) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
+        } 
+       
+        closeDb(connection);
         return bDto;
 	}
 }

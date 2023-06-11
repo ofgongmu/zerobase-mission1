@@ -11,7 +11,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>위치 히스토리 목록</title>
+<title>와이파이 정보 구하기</title>
 <style>
 	body {
 		font-family: sans-serif;
@@ -49,7 +49,7 @@
 </style>
 </head>
 <body>
-	<h1>와이파이 정보 구하기</h1>
+	<h1>북마크 관리</h1>
 	<div id="menu">
 		<a href="home.jsp">홈</a>
 		<span> | </span>
@@ -76,7 +76,7 @@
 				</tr>
 			
 				<tr>
-					<td colspan="2"><center><button type="submit">추가</button></center></td>
+					<td colspan="2" align="center"><button type="submit">추가</button></td>
 				</tr>
 			
 				

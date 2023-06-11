@@ -11,7 +11,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>위치 히스토리 목록</title>
+<title>와이파이 정보 구하기</title>
 </head>
 <body>
 	

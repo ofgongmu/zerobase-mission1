@@ -1,3 +1,5 @@
+<%@page import="data.BookmarkDTO"%>
+<%@page import="data.BookmarkDAO"%>
 <%@page import="data.GroupDTO"%>
 <%@page import="data.GroupDAO"%>
 <%@page import="data.DAO"%>
@@ -11,11 +13,10 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>위치 히스토리 목록</title>
+<title>와이파이 정보 구하기</title>
 </head>
 <body>
-	<%
-	
+	<%	
 		GroupDAO gDao = new GroupDAO(); 
 		
 		
@@ -32,6 +33,8 @@
 		out.println("alert('북마크 그룹 정보를 추가하였습니다.')");
 		out.println("location.href='bookmark-group.jsp'");
 		out.println("</script>");
+		
+		
 	%>
 	
 		
